@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Smart Job Finder</title>
+
+<style>
+
+body{
+font-family: Arial;
+background:#f2f2f2;
+text-align:center;
+}
+
+.container{
+background:white;
+width:500px;
+margin:auto;
+padding:20px;
+margin-top:50px;
+border-radius:10px;
+box-shadow:0 0 10px gray;
+}
+
+input{
+width:80%;
+padding:10px;
+margin:10px;
+font-size:16px;
+}
+
+button{
+background:#007bff;
+color:white;
+border:none;
+padding:10px 20px;
+cursor:pointer;
+border-radius:5px;
+font-size:16px;
+}
+
+button:hover{
+background:#0056b3;
+}
+
+.job{
+background:#fafafa;
+padding:15px;
+margin-top:15px;
+border-radius:8px;
+box-shadow:0 0 5px lightgray;
+}
+
+.applyBtn{
+background:#28a745;
+margin-top:10px;
+}
+
+.applyBtn:hover{
+background:#1e7e34;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Smart Job Finder</h2>
+
+<p>Enter your skill to find suitable jobs</p>
+
+<input type="text" id="skill" placeholder="Example: HTML, Python, Java">
+
+<br>
+
+<button onclick="findJobs()">Find Jobs</button>
+
+<div id="results"></div>
+
+</div>
+
+
+<script>
+
+async function findJobs(){
+
+let skill=document.getElementById("skill").value;
+
+let url="https://remotive.com/api/remote-jobs?search="+skill;
+
+let response=await fetch(url);
+
+let data=await response.json();
+
+let jobs=data.jobs.slice(0,5);
+
+let output="";
+
+jobs.forEach(job=>{
+
+output+=`
+<div class="job">
+
+<h3>${job.title}</h3>
+
+<p><b>Company:</b> ${job.company_name}</p>
+
+<p><b>Location:</b> ${job.candidate_required_location}</p>
+
+<p><b>Category:</b> ${job.category}</p>
+
+<button class="applyBtn" onclick="window.open('${job.url}')">Apply</button>
+
+</div>
+`;
+
+});
+
+document.getElementById("results").innerHTML=output;
+
+}
+
+</script>
+
+</body>
+</html>
